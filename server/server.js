@@ -13,6 +13,8 @@ app.use(cors({
 }))
 app.use(express.json())
 
+app.get('/api/test', (req, res) => res.send('TEST SUCCESS'))
+
 app.post('/api/subscribe', async (req, res) => {
     const subscription = req.body
 

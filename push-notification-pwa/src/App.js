@@ -19,7 +19,7 @@ const App = () => {
       })
 
       if(push){
-        const res = await fetch('http://localhost:5000/api/subscribe', {
+        const res = await fetch('http://192.168.1.142:5000/api/subscribe', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
