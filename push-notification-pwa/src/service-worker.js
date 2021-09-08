@@ -83,7 +83,7 @@ self.addEventListener('push', e => {
     }
   }
 
-  e.wailUntil(
+  e.waitUntil(
     self.registration.showNotification(data.title, options)
   )
 })
