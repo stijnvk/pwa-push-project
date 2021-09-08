@@ -70,3 +70,10 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+self.addEventListener('push', (e) => {
+  console.log(e)
+
+  const options = {
+
+  }
+})
