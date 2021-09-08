@@ -47,6 +47,10 @@ app.push('/api/send-notification', async (req, res) => {
             message: 'No subs available'
         })
     }else{
+        subs.forEach(sub => {
+            webPush.sendNotification(sub, data)
+        })
+
         res.status(200).json({
             message: 'Notification send!'
         })
