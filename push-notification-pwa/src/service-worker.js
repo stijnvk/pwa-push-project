@@ -70,10 +70,41 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
-self.addEventListener('push', (e) => {
-  console.log(e)
+self.addEventListener('push', e => {
+  const data = e.data.json()
 
   const options = {
-
+    body: data.body,
+    icon: data.icon,
+    vibrate: [100, 50, 100],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: '2'
+    }
   }
+
+  e.wailUntil(
+    self.registration.showNotification(data.title, options)
+  )
 })
+
+self.addEventListener('notificationclick', e => {
+  let url = process.env.PUBLIC_URL;
+  e.notification.close(); // Android needs explicit close.
+  e.waitUntil(
+      clients.matchAll({type: 'window'}).then( windowClients => {
+          // Check if there is already a window/tab open with the target URL
+          for (var i = 0; i < windowClients.length; i++) {
+              var client = windowClients[i];
+              // If so, just focus it.
+              if (client.url === url && 'focus' in client) {
+                  return client.focus();
+              }
+          }
+          // If not, then open the target URL in a new window/tab.
+          if (clients.openWindow) {
+              return clients.openWindow(url);
+          }
+      })
+  );
+});

@@ -19,7 +19,7 @@ app.post('/api/subscribe', async (req, res) => {
     const subscriptionsJSON = await fs.readFileSync('./db/db.json')
     let subscriptions = JSON.parse(subscriptionsJSON)
 
-    const alreadySubscribed = subscriptions.find(item => item === subscription)
+    const alreadySubscribed = subscriptions.find(item => item.keys.p256h === subscription.keys.p256h)
 
     if(!alreadySubscribed){
         subscriptions.push(subscription)
@@ -36,7 +36,7 @@ app.post('/api/subscribe', async (req, res) => {
     }
 })
 
-app.push('/api/send-notification', async (req, res) => {
+app.post('/api/send-notification', async (req, res) => {
     const data = req.body
 
     const subsJSON = await fs.readFileSync('./db/db.json');
@@ -48,7 +48,7 @@ app.push('/api/send-notification', async (req, res) => {
         })
     }else{
         subs.forEach(sub => {
-            webPush.sendNotification(sub, data)
+            webPush.sendNotification(sub, JSON.stringify(data))
         })
 
         res.status(200).json({
